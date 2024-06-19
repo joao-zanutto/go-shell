@@ -16,7 +16,7 @@ func exit(input []string) {
 }
 
 func echo(input []string) {
-	fmt.Println(input[0])
+	fmt.Println(strings.Join(input, " "))
 }
 
 func getType(input []string, c map[string]func([]string)) {

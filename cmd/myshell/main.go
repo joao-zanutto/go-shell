@@ -26,7 +26,7 @@ func main() {
 			os.Exit(exit_code)
 		}
 		if cmd[0] == "echo" {
-			fmt.Fprint(os.Stdout, strings.Join(cmd[1:], " "))
+			fmt.Fprint(os.Stdout, strings.Join(cmd[1:], " ")+"\n")
 			continue
 		}
 

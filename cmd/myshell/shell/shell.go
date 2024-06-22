@@ -13,8 +13,12 @@ type shell struct {
 }
 
 func (s shell) exit(input []string) {
-	exit_code, _ := strconv.Atoi(input[0])
-	os.Exit(exit_code)
+	if len(input) > 0 {
+		exit_code, _ := strconv.Atoi(input[0])
+		os.Exit(exit_code)
+	}
+
+	os.Exit(0)
 }
 
 func (s shell) echo(input []string) {
@@ -38,14 +42,6 @@ func (s shell) getType(input []string) {
 	}
 }
 
-func (s *shell) initBuiltin(){
-	s.c = map[string]func([]string){
-		"echo": s.echo,
-		"exit": s.exit,
-		"type": s.getType,
-	}
-}
-
 func (s *shell) initPrograms(){
 	dirs := strings.Split(os.Getenv("PATH"), ":")
 	for _, dir := range dirs {
@@ -66,7 +62,9 @@ func (s shell) Execute(command string, input []string) {
 
 func New() shell {
 	s:= shell { c: make(map[string]func([]string)), pc: make(map[string]string) }
-	s.initBuiltin()
+	s.c["echo"] = s.echo
+	s.c["exit"] = s.exit
+	s.c["type"] = s.getType
 	s.initPrograms()
 	return s
 }

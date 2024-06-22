@@ -12,6 +12,11 @@ type shell struct {
 	pc map[string]string
 }
 
+func (s shell) pwd(args []string) {
+	dir, _ := os.Getwd()
+	fmt.Println(dir)
+}
+
 func (s shell) exit(args []string) {
 	os.Exit(0)
 }
@@ -49,6 +54,7 @@ func New() shell {
 	s.c["echo"] = s.echo
 	s.c["exit"] = s.exit
 	s.c["type"] = s.getType
+	s.c["pwd"] = s.pwd
 	dirs := strings.Split(os.Getenv("PATH"), ":")
 	for _, dir := range dirs {
 		files, _ := os.ReadDir(dir)

@@ -13,8 +13,27 @@ type shell struct {
 }
 
 func (s shell) cd(args []string) {
-	if err := os.Chdir(args[0]); err != nil {
-		fmt.Println(args[0] + ": No such file or directory")
+	if strings.HasPrefix(args[0], "/") {
+		if err := os.Chdir(args[0]); err != nil {
+			fmt.Println(args[0] + ": No such file or directory")
+		}
+		return
+	}
+
+	target_array := strings.Split(args[0], "/")
+	current, _ := os.Getwd()
+	current_array := strings.Split(current, "/")
+	for idx, path := range target_array {
+		if path == ".." {
+			current_array = current_array[:len(current_array) -1]
+		} else if path == "."{
+		} else {
+			resolved := "/" + strings.Join(current_array, "/") + "/" + strings.Join(target_array[idx:], "/")
+			if err := os.Chdir(resolved); err != nil {
+				fmt.Println(resolved + ": No such file or directory")
+			}
+			return
+		}
 	}
 }
 

@@ -12,7 +12,8 @@ import (
 func main() {
 	s := shell.New()
 	for {
-		fmt.Fprint(os.Stdout, "$ ")
+		current, _ := os.Getwd()
+		fmt.Fprint(os.Stdout, current + "$ ")
 
 		// Read input,
 		input, _ := bufio.NewReader(os.Stdin).ReadString('\n')

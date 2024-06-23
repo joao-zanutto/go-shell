@@ -12,6 +12,12 @@ type shell struct {
 	pc map[string]string
 }
 
+func (s shell) cd(args []string) {
+	if err := os.Chdir(args[0]); err != nil {
+		fmt.Println(args[0] + ": No such file or directory")
+	}
+}
+
 func (s shell) pwd(args []string) {
 	dir, _ := os.Getwd()
 	fmt.Println(dir)
@@ -55,6 +61,7 @@ func New() shell {
 	s.c["exit"] = s.exit
 	s.c["type"] = s.getType
 	s.c["pwd"] = s.pwd
+	s.c["cd"] = s.cd
 	dirs := strings.Split(os.Getenv("PATH"), ":")
 	for _, dir := range dirs {
 		files, _ := os.ReadDir(dir)
